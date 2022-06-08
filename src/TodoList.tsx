@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, KeyboardEvent, ChangeEvent} from 'react';
 import {FilterValuesType} from "./App";
 
 export type TaskType = {
@@ -9,36 +9,48 @@ export type TaskType = {
 type TodoListPropsType = {
     title: string
     tasks: TaskType[]
-    addTask: (title:string)=> void
+    addTask: (title: string) => void
     removeTask: (taskID: string) => void
     changeTodoListFilter: (filter: FilterValuesType) => void
 }
 const TodoList = (props: TodoListPropsType) => {
+    const [title, setTitle] = useState<string>('')
     const tasksJSX = props.tasks.map(t => {
+        const removeTask = () => props.removeTask(t.id)
         return (
             <li key={t.id}>
                 <input type="checkbox" checked={t.isDone}/>
                 <span>{t.title}</span>
-                <button onClick={() => props.removeTask(t.id)}>x</button>
+                <button onClick={removeTask}>x</button>
             </li>
         )
     })
-    const getOnClickHandler = (filter:FilterValuesType) => {
+    const getOnClickHandler = (filter: FilterValuesType) => {
         return () => props.changeTodoListFilter(filter)
     }
-    const OnClickHandler = () => props.changeTodoListFilter('all')
+    const onClickHandler = () => props.changeTodoListFilter('all')
+    const addTask = () => {
+        props.addTask(title)
+        setTitle('')
+    }
+    const onKeyDownAddTask = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addTask()
+    const onChangeSetTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
     return (
         <div>
             <h3>{props.title}</h3>
             <div>
-                <input/>
-                <button onClick={()=>props.addTask('read')}>+</button>
+                <input
+                    value={title}
+                    onChange={onChangeSetTitle}
+                    onKeyDown={onKeyDownAddTask}
+                />
+                <button onClick={addTask}>+</button>
             </div>
             <ul>
                 {tasksJSX}
             </ul>
             <div>
-                <button onClick={OnClickHandler}>All</button>
+                <button onClick={onClickHandler}>All</button>
                 <button onClick={getOnClickHandler('active')}>Active</button>
                 <button onClick={getOnClickHandler('completed')}>Completed</button>
             </div>
