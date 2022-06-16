@@ -3,26 +3,18 @@ import './App.css';
 import TodoList, {TaskType} from "./TodoList";
 import {v1} from 'uuid';
 
-// CRUD
-// create
-// read
-// update
-// delete
-
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
 function App() {
-    console.log(v1()) // => string
+    console.log(v1())
     //BLL:
     const [tasks, setTasks] = useState<Array<TaskType>>([
         {id: v1(), title: "HTML&CSS", isDone: true},
         {id: v1(), title: "JS/TS", isDone: true},
         {id: v1(), title: "React", isDone: false},
     ])
-
     const [filter, setFilter] = useState<FilterValuesType>('all')
     const [state, setState] = useState<Array<TaskType>>(tasks)
-
     const setLastState = () => {
         setTasks(state)
     }
@@ -46,15 +38,6 @@ function App() {
     const changeTodoListFilter = (filter: FilterValuesType) => {
         setFilter(filter)
     }
-
-    // let tasksForRender = tasks
-    // if (filter === 'active') {
-    //     tasksForRender = tasks.filter(t => t.isDone === false)
-    // }
-    // if (filter === 'completed') {
-    //     tasksForRender = tasks.filter(t => t.isDone === true)
-    // }
-
     let tasksForRender;
     switch (filter) {
         case "active":
@@ -66,8 +49,6 @@ function App() {
         default:
             tasksForRender = tasks
     }
-
-    //UI:
     return (
         <div className="App">
             <TodoList

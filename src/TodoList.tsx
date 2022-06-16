@@ -20,21 +20,21 @@ const TodoList = (props: TodoListPropsType) => {
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
     const tasksJSX = props.tasks.length
-       ? props.tasks.map(t => {
-        const removeTask = () => props.removeTask(t.id)
-        const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(t.id, e.currentTarget.checked)
-        return (
-            <li key={t.id}>
-                <input
-                    onChange={changeTaskStatus}
-                    type="checkbox"
-                    checked={t.isDone}
-                />
-                <span className={t.isDone ? 'task isDone' : 'task'}>{t.title}</span>
-                <button onClick={removeTask}>x</button>
-            </li>
-        )
-    })
+        ? props.tasks.map(t => {
+            const removeTask = () => props.removeTask(t.id)
+            const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(t.id, e.currentTarget.checked)
+            return (
+                <li key={t.id}>
+                    <input
+                        onChange={changeTaskStatus}
+                        type="checkbox"
+                        checked={t.isDone}
+                    />
+                    <span className={t.isDone ? 'task isDone' : 'task'}>{t.title}</span>
+                    <button onClick={removeTask}>x</button>
+                </li>
+            )
+        })
         : <span>Your taskslist is empty</span>
     const getOnClickHandler = (filter: FilterValuesType) => {
         return () => props.changeTodoListFilter(filter)
@@ -52,7 +52,7 @@ const TodoList = (props: TodoListPropsType) => {
     const onKeyDownAddTask = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addTask()
     const onChangeSetTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
-   error && setError(false)
+        error && setError(false)
     }
     return (
         <div>
